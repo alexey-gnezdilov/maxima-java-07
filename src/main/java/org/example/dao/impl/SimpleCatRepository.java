@@ -36,7 +36,7 @@ public class SimpleCatRepository extends Util implements BaseRepository<Cat, Lon
     }
 
     @Override
-    public void addElement(Cat cat) throws SQLException {
+    public void addElement(Cat cat) {
         String sql = String.format(
                 "INSERT INTO %s (ID, NAME, WEIGHT, ISANGRY) VALUES (?, ?, ?, ?)", tableName);
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {

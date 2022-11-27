@@ -8,7 +8,7 @@ public interface BaseRepository<T, I> {
     //create
     void createTable() throws SQLException;
 
-    void addElement(T element) throws SQLException;
+    void addElement(T element);
 
     //read
     List<T> getAll();
