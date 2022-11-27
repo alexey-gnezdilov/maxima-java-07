@@ -3,21 +3,21 @@ package org.example.dao;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface BaseRepository<Cat, Long> {
+public interface BaseRepository<T, I> {
 
     //create
     void createTable() throws SQLException;
 
-    void addElement(Cat cat) throws SQLException;
+    void addElement(T element) throws SQLException;
 
     //read
-    List<Cat> getAll();
+    List<T> getAll();
 
-    Cat getById(Long id);
+    T getById(I id);
 
     //update
-    void update(java.lang.Long id, String newName, int newWeight, boolean isAngry) throws SQLException;
+    void update(I id, String newName, int newWeight, boolean isAngry) throws SQLException;
 
     //delete
-    void remove(Long id);
+    void remove(I id);
 }
