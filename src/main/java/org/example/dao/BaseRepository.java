@@ -16,7 +16,7 @@ public interface BaseRepository<T, I> {
     T getById(I id);
 
     //update
-    void update(I id, String newName, int newWeight, boolean isAngry) throws SQLException;
+    void update(I id, String newName, int newWeight, boolean isAngry);
 
     //delete
     void remove(I id);

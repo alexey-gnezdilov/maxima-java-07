@@ -53,18 +53,11 @@ public class SimpleCatRepository extends Util implements BaseRepository<Cat, Lon
     //read
     @Override
     public List<Cat> getAll() {
-        List<Cat> cats = new ArrayList<>();
+        List<Cat> cats = null;
         String sql = String.format("SELECT ID, NAME, WEIGHT, ISANGRY FROM %s", tableName);
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-                Cat cat = new Cat();
-                cat.setId(resultSet.getLong("ID"));
-                cat.setName(resultSet.getString("NAME"));
-                cat.setWeight(resultSet.getInt("WEIGHT"));
-                cat.setAngry(resultSet.getBoolean("ISANGRY"));
-                cats.add(cat);
-            }
+            cats = catListRowMapper.apply(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -73,16 +66,13 @@ public class SimpleCatRepository extends Util implements BaseRepository<Cat, Lon
 
     @Override
     public Cat getById(Long id) {
+        Cat cat = null;
         String sql = String.format(
                 "SELECT ID, NAME, WEIGHT, ISANGRY FROM %s WHERE ID=%d", tableName, id);
-        Cat cat = new Cat();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                cat.setId(resultSet.getLong("ID"));
-                cat.setName(resultSet.getString("NAME"));
-                cat.setWeight(resultSet.getInt("WEIGHT"));
-                cat.setAngry(resultSet.getBoolean("ISANGRY"));
+            while (resultSet.next()) {
+                cat = catRowMapper.apply(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
