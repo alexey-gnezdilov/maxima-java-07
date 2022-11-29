@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.dao.impl.SimpleCatRepository;
+import org.example.dao.impl.AdvancedCatRepository;
 import org.example.entity.Cat;
 
 import java.sql.SQLException;
@@ -10,7 +10,7 @@ public class App
     public static void main( String[] args ) throws SQLException {
         System.out.println( "Hello" );
 
-        SimpleCatRepository catRepository = new SimpleCatRepository();
+        AdvancedCatRepository catRepository = new AdvancedCatRepository();
 
         Cat cat1 = new Cat();
         cat1.setId(1L);

@@ -2,22 +2,26 @@ package org.example.dao.impl;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.example.util.CustomUtil;
-import org.example.dao.BaseRepository;
+import org.example.dao.CatRepository;
 import org.example.entity.Cat;
 
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.function.Function;
 
-public class SimpleCatRepository extends CustomUtil implements BaseRepository<Cat, Long> {
+public class AdvancedCatRepository implements CatRepository {
 
     private static String DB_DRIVER;
     private static String DB_URL;
     private static String tableName;
     private static Connection connection;
 
-    public SimpleCatRepository() throws SQLException {
+    public AdvancedCatRepository() throws SQLException {
         DB_DRIVER = getPropertyValue("DB_DRIVER");
         DB_URL = getPropertyValue("DB_URL");
         tableName = getPropertyValue("TABLE_NAME");
@@ -110,5 +114,34 @@ public class SimpleCatRepository extends CustomUtil implements BaseRepository<Ca
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public Function<ResultSet, List<Cat>> catListRowMapper = catList -> {
+        List<Cat> cats = new ArrayList<>();
+        try {
+            while (catList.next()) {
+                Cat cat = new Cat();
+                cat.setId(catList.getLong("id"));
+                cat.setName(catList.getString("name"));
+                cat.setWeight(catList.getInt("weight"));
+                cat.setAngry(catList.getBoolean("isAngry"));
+                cats.add(cat);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cats;
+    };
+
+    public static String getPropertyValue(String propertyName) {
+        String propertyValue = "";
+        Properties properties = new Properties();
+        try (InputStream inputStream = AdvancedCatRepository.class.getResourceAsStream("/app.properties")) {
+            properties.load(inputStream);
+            propertyValue = properties.getProperty(propertyName);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        return propertyValue;
     }
 }
