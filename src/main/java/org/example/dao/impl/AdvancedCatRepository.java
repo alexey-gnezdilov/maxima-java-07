@@ -22,8 +22,8 @@ public class AdvancedCatRepository implements CatRepository {
     private static Connection connection;
 
     public AdvancedCatRepository() throws SQLException {
-        DB_DRIVER = getPropertyValue("DB_DRIVER");
-        DB_URL = getPropertyValue("DB_URL");
+        DB_DRIVER = getPropertyValue("db.driver");
+        DB_URL = getPropertyValue("db.url");
         tableName = getPropertyValue("TABLE_NAME");
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(DB_URL);
